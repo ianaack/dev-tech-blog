@@ -5,8 +5,6 @@ const withAuth = require("../utils/auth");
 
 // get all posts for dashboard
 router.get("/", withAuth, (req, res) => {
-  console.log(req.session);
-  console.log("======================");
   Post.findAll({
     where: {
       user_id: req.session.user_id,
@@ -37,6 +35,7 @@ router.get("/", withAuth, (req, res) => {
     });
 });
 
+// get single post to edit in dashboard
 router.get("/edit/:id", withAuth, (req, res) => {
   Post.findByPk(req.params.id, {
     attributes: ["id", "post_content", "title", "created_at"],

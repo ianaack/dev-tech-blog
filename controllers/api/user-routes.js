@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { User, Post, Comment, Vote } = require("../../models");
+const { User, Post, Comment} = require("../../models");
 
 // get all users
 router.get("/", (req, res) => {
@@ -13,6 +13,7 @@ router.get("/", (req, res) => {
     });
 });
 
+// get single user
 router.get("/:id", (req, res) => {
   User.findOne({
     attributes: { exclude: ["password"] },
@@ -32,12 +33,6 @@ router.get("/:id", (req, res) => {
           attributes: ["title"],
         },
       },
-      {
-        model: Post,
-        attributes: ["title"],
-        through: Vote,
-        as: "voted_posts",
-      },
     ],
   })
     .then((dbUserData) => {
@@ -53,6 +48,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// create a user
 router.post("/", (req, res) => {
   User.create({
     username: req.body.username,
@@ -74,6 +70,7 @@ router.post("/", (req, res) => {
     });
 });
 
+// login route
 router.post("/login", (req, res) => {
   User.findOne({
     where: {
@@ -102,6 +99,7 @@ router.post("/login", (req, res) => {
   });
 });
 
+// logout route
 router.post("/logout", (req, res) => {
   if (req.session.loggedIn) {
     req.session.destroy(() => {
@@ -112,6 +110,7 @@ router.post("/logout", (req, res) => {
   }
 });
 
+// update a users information
 router.put("/:id", (req, res) => {
   // pass in req.body instead to only update what's passed through
   User.update(req.body, {
@@ -133,6 +132,7 @@ router.put("/:id", (req, res) => {
     });
 });
 
+// delete a user
 router.delete("/:id", (req, res) => {
   User.destroy({
     where: {
