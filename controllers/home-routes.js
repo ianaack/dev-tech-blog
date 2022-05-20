@@ -79,7 +79,7 @@ router.get("/post/:id", (req, res) => {
 // get login page
 router.get("/login", (req, res) => {
   if (req.session.loggedIn) {
-    res.redirect("/");
+    res.redirect("/dashboard");
     return;
   }
 
